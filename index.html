@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Sports Player</title>
+    <style>
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background-color: #000; overflow: hidden;
+        }
+        .iframe-container {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        }
+        iframe {
+            width: 100%; height: 100%; border: none;
+        }
+        #magic-ad-layer {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 9999; background-color: rgba(255, 255, 255, 0); cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="magic-ad-layer" onclick="triggerAd()"></div>
+
+    <div class="iframe-container">
+        <iframe id="video-player" src="" sandbox="allow-scripts allow-same-origin" allowfullscreen></iframe>
+    </div>
+
+    <script>
+        // লিংক ডিকোড লজিক (Base64 + Reverse)
+        const urlParams = new URLSearchParams(window.location.search);
+        const encodedId = urlParams.get('id');
+
+        if (encodedId) {
+            try {
+                const base64Str = encodedId.split('').reverse().join('');
+                const realUrl = atob(base64Str);
+                document.getElementById('video-player').src = realUrl;
+            } catch (e) {
+                console.error("Invalid Stream ID");
+            }
+        } else {
+            document.body.innerHTML = "<h3 style='color:white; text-align:center; margin-top:20%'>Stream Link is Missing!</h3>";
+        }
+
+        // থ্রি-ক্লিক অ্যাড লজিক
+        let clickCount = 0;
+        const maxClicks = 3; 
+        
+        // আপনার অ্যাড নেটওয়ার্কের ডিরেক্ট লিংক (Direct Link) এখানে বসাবেন
+        const myAdLink = "https://www.your-ad-network-direct-link.com"; 
+
+        function triggerAd() {
+            clickCount++;
+            window.open(myAdLink, '_blank');
+            if (clickCount >= maxClicks) {
+                document.getElementById('magic-ad-layer').style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
